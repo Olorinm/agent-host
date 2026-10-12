@@ -25,3 +25,9 @@ jobs:
         timeout-minutes: 3
       - run: npm run test:package
         timeout-minutes: 5
+      - run: npm run test:ui
+      - if: runner.os == 'Linux'
+        run: npx playwright install --with-deps chromium
+      - if: runner.os == 'Linux'
+        run: npm run test:ui:package
+        timeout-minutes: 5
