@@ -18,10 +18,22 @@
     "README.md",
     "README.zh-CN.md",
     "docs",
-    "examples/file-editor",
-    "examples/http-editor",
+    "examples/file-editor/cli.mjs",
+    "examples/file-editor/editor.mjs",
+    "examples/file-editor/package.json",
+    "examples/http-editor/app.js",
+    "examples/http-editor/server.mjs",
+    "examples/http-editor/index.html",
+    "examples/http-editor/README.md",
+    "examples/http-editor/package.json",
+    "examples/http-editor/host.example.json",
     "plugins",
-    "examples/react-editor"
+    "examples/react-editor/app.jsx",
+    "examples/react-editor/build.mjs",
+    "examples/react-editor/editor.css",
+    "examples/react-editor/index.html",
+    "examples/react-editor/README.md",
+    "examples/react-editor/server.mjs"
   ],
   "exports": {
     "./server": {
