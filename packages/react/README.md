@@ -11,7 +11,7 @@ npm --workspace @olorinm/agent-ui run build
 npm pack --workspace @olorinm/agent-ui
 
 # From a separate React 19 product:
-npm install /path/to/olorinm-agent-ui-0.1.0-alpha.1.tgz
+npm install /path/to/olorinm-agent-ui-0.1.0-alpha.2.tgz
 ```
 
 ```tsx

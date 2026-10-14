@@ -1,6 +1,6 @@
 {
   "name": "@olorinm/agent-ui",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Reusable React chat and application components with caller-owned data, tools and interactions",
   "type": "module",
   "license": "Apache-2.0",

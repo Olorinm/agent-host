@@ -8,7 +8,7 @@ Build and install the UI archive:
 npm ci
 npm pack --workspace @olorinm/agent-ui
 # In your product:
-npm install /path/to/olorinm-agent-ui-0.1.0-alpha.1.tgz
+npm install /path/to/olorinm-agent-ui-0.1.0-alpha.2.tgz
 ```
 
 React and React DOM 19 are peer dependencies. The package root only renders caller-owned data. It makes no HTTP calls and has no product-specific stores, authentication, room membership, filesystem access or knowledge of business objects.
