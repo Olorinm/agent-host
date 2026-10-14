@@ -1,6 +1,6 @@
 # Agent UI
 
-Reusable React chat components for any product. Rendering is independent of Agent Host: bring your own messages, event source, interaction callbacks, file operations and styling.
+Reusable React chat and application components for any product. Rendering is independent of Agent Host: bring your own messages, event source, interaction callbacks, file operations and styling.
 
 This is an alpha package, distributed as a build archive. It is not published to the npm registry yet.
 
@@ -44,8 +44,11 @@ export function Chat({answer, send}: {
 | `ResourceCard` | Resource presentation and caller-owned open/context-menu actions |
 | `ChatProvider` | Translation and button replacement |
 | `@olorinm/agent-ui/agent-host` | Optional Agent Host interaction hook/components and ordered event projection |
+| `@olorinm/agent-ui/app` | `Button`, `Dialog`, `ConfirmProvider`, `ToastProvider`, `EmptyState`, `NameAvatar`/`EmployeeAvatar`, `ObjectSettingsSection`/`Row`, `ProductStatus`, `Tooltip`, `AgentStateIndicator` |
 
 There are no network calls, product stores, backend startup or credential discovery in this package. React is a peer dependency of this package only, not a dependency of Agent Host.
+
+Application components use `@olorinm/agent-ui/app.css`: tokens on `:root`, `data-theme="dark"` on the root element for dark mode, a small base reset, and `.agent-app` for the container. Confirm and toast copy uses the same `ChatProvider` translation.
 
 Use `data-theme="dark"` on `.agent-chat` for the dark theme. Override CSS variables for colors, typography and spacing, or import only `thread.css`, `disclosure.css` and `cards.css` and supply your own theme. These styles use compatibility class names; importing them is explicit and opt-in.
 

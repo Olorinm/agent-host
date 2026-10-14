@@ -5,7 +5,7 @@ import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
 import { chromium, expect } from "@playwright/test";
-import { checkUiBrowser } from "./test-ui-browser.mjs";
+import { checkAppBrowser, checkUiBrowser } from "./test-ui-browser.mjs";
 
 const root = process.cwd();
 await mkdir(".local", { recursive: true });
@@ -85,7 +85,9 @@ declare const answer: HostInteractionAnswer;
 const assignAnswer: InteractionAnswer = answer;
 declare const page: EventPage;
 for(const item of page.events) appendRunEvent(createRunView(item.event.runId), item);
-void [assignHandler,assignRequest,assignAnswer];
+import {Button, ConfirmProvider, ProductStatus, useConfirm, type ProductStatusTone} from "@olorinm/agent-ui/app";
+const tone: ProductStatusTone = "success";
+void [assignHandler,assignRequest,assignAnswer,Button,ConfirmProvider,ProductStatus,useConfirm,tone];
 `,
   );
   execFileSync(
@@ -132,6 +134,25 @@ void [assignHandler,assignRequest,assignAnswer];
       ),
     );
   });
+  await cp("packages/react/test/app-fixture.tsx", join(consumer, "app-fixture.tsx"));
+  await build({
+    entryPoints: [join(consumer, "app-fixture.tsx")],
+    outfile: join(consumer, "app-fixture.js"),
+    bundle: true,
+    format: "iife",
+    platform: "browser",
+    target: "es2022",
+    jsx: "automatic",
+    metafile: true,
+  }).then((result) => {
+    const inputs = Object.keys(result.metafile.inputs);
+    assert.ok(inputs.some((path) => path.includes("node_modules/@olorinm/agent-ui/dist/app/")));
+    assert.ok(inputs.every((path) => !path.includes("web/src/") && !path.includes("packages/react/src")));
+  });
+  await writeFile(
+    join(consumer, "app-fixture.html"),
+    '<meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="./app-fixture.css"><div id="root"></div><script src="./app-fixture.js"></script>',
+  );
   await writeFile(
     join(consumer, "fixture.html"),
     '<meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="./fixture.css"><div id="root"></div><script src="./fixture.js"></script>',
@@ -194,6 +215,9 @@ void [assignHandler,assignRequest,assignAnswer];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(pathToFileURL(join(consumer, "fixture.html")).href);
   await checkUiBrowser(page);
+  await page.setViewportSize({ width: 1100, height: 900 });
+  await page.goto(pathToFileURL(join(consumer, "app-fixture.html")).href);
+  await checkAppBrowser(page);
   await page.setViewportSize({ width: 1280, height: 900 });
   const browserAuth = [];
   page.on("request", (request) => {

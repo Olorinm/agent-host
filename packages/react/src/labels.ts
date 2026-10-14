@@ -28,10 +28,13 @@ export const defaultLabels = {
   "chat.saveToArtifacts": "Save to artifacts",
   "chat.saveToArtifactsAria": "Save {name} to artifacts",
   "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
   "composer.placeholder": "Ask the agent",
   "composer.send": "Send message",
   "composer.stop": "Stop running",
   "filePreview.download": "Download",
   "thread.resourcePreview": "Preview",
+  "toast.close": "Dismiss notification",
+  "toast.regionLabel": "Notifications",
 } as const;
 export type ChatLabelKey = keyof typeof defaultLabels;

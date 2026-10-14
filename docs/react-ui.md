@@ -48,6 +48,8 @@ The hook handles concurrent requests and removes/rejects them when their abort s
 
 Import `@olorinm/agent-ui/styles.css` and wrap your UI in `.agent-chat` for a default theme; set `data-theme="dark"` for dark mode. All colors/spacing/typography use CSS variables. Existing products can import the three component stylesheets and keep their tokens. CSS imports are optional and do not reset the document root.
 
+`@olorinm/agent-ui/app` adds product-neutral application primitives: buttons, dialogs, confirmation, toasts, empty states, avatars, settings rows, status pills, tooltips and state indicators. Import `@olorinm/agent-ui/app.css` once. Unlike the chat stylesheet, it defines tokens on `:root` (so portaled dialogs and toasts share them), switches to dark with `data-theme="dark"` on the root element, and applies a small base (`box-sizing`, heading/paragraph margins, focus ring, reduced motion). Use `.agent-app` on the application container for its background and typography.
+
 `ChatProvider` accepts a `translate` function and a `Button` replacement. `AgentInteraction.labels` replaces adapter copy. Message render callbacks, composer slots, resource actions and native interaction renderers let the product retain its own UI conventions.
 
 ## Working example and verification

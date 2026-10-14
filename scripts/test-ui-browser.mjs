@@ -134,22 +134,59 @@ export async function checkUiBrowser(page) {
   );
 }
 
-if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  const output = resolve(".local/chat-ui/browser");
+export async function checkAppBrowser(page) {
+  await page.getByRole("button", { name: "Helper Ready", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Helper" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.getByRole("button", { name: "Destroy", exact: true }).click();
+  const confirm = page.getByRole("dialog", { name: "Destroy environment?" });
+  await expect(confirm).toContainText("Workspace files are removed.");
+  await confirm.getByRole("button", { name: "取消" }).click();
+  await expect(page.getByLabel("Confirm result")).toHaveText("null");
+  await page.getByRole("button", { name: "Destroy", exact: true }).click();
+  await page.getByRole("button", { name: "确认" }).click();
+  await expect(page.getByLabel("Confirm result")).toHaveText("primary");
+  await page.getByRole("button", { name: "Notify", exact: true }).click();
+  const notices = page.getByRole("region", { name: "通知" });
+  await expect(notices.getByRole("status")).toHaveText("Agent paused");
+  await notices.getByRole("button", { name: "关闭通知" }).click();
+  await expect(notices.getByRole("status")).toHaveCount(0);
+  const background = () => page.evaluate(() => getComputedStyle(document.querySelector(".agent-app")).backgroundColor);
+  const light = await background();
+  await page.getByRole("button", { name: "Theme", exact: true }).click();
+  assert.notEqual(await background(), light, "dark theme must change application tokens");
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal(
+    await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    true,
+    "mobile application content must not overflow",
+  );
+}
+
+async function buildFixture(entry, output) {
   await mkdir(output, { recursive: true });
   await build({
-    entryPoints: ["packages/react/test/browser-fixture.tsx"],
+    entryPoints: [entry],
     outfile: join(output, "app.js"),
     bundle: true,
     format: "iife",
     platform: "browser",
     target: "es2022",
     jsx: "automatic",
+    loader: { ".json": "json" },
   });
   await writeFile(
     join(output, "index.html"),
     '<meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="./app.css"><div id="root"></div><script src="./app.js"></script>',
   );
+}
+
+if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  const output = resolve(".local/chat-ui/browser");
+  const appOutput = resolve(".local/chat-ui/app");
+  await buildFixture("packages/react/test/browser-fixture.tsx", output);
+  await buildFixture("packages/react/test/app-fixture.tsx", appOutput);
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({
@@ -164,6 +201,14 @@ if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
       path: join(output, "standalone-mobile.png"),
       fullPage: true,
     });
+    const appPage = await browser.newPage({
+      viewport: { width: 1100, height: 900 },
+      reducedMotion: "reduce",
+    });
+    appPage.on("pageerror", (error) => errors.push(error.message));
+    await appPage.goto(pathToFileURL(join(appOutput, "index.html")).href);
+    await checkAppBrowser(appPage);
+    await appPage.screenshot({ path: join(appOutput, "app-mobile.png"), fullPage: true });
     assert.deepEqual(errors, []);
     console.log("Shared UI browser interactions passed");
   } finally {
