@@ -607,6 +607,14 @@
   background: var(--c-line-06);
 }
 
+.agent-ui-settings-row-plain {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.agent-ui-settings-row + .agent-ui-settings-row-plain::before {
+  left: var(--sp-4);
+}
+
 .agent-ui-settings-button {
   width: 100%;
   cursor: pointer;
@@ -728,6 +736,10 @@
   .agent-ui-settings-row + .agent-ui-settings-row::before {
     right: var(--sp-3);
     left: var(--sp-10);
+  }
+
+  .agent-ui-settings-row + .agent-ui-settings-row-plain::before {
+    left: var(--sp-3);
   }
 }
 

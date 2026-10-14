@@ -24,7 +24,9 @@ test("application primitives render without product stores or network access", (
   );
   assert.match(html, /agent-ui-settings-section/);
   assert.match(html, /data-tone="warning"[^>]*>.*Needs action/);
-  assert.match(html, /<button class="agent-ui-settings-row agent-ui-settings-button" type="button">/);
+  assert.match(html, /<button class="agent-ui-settings-row agent-ui-settings-row-plain agent-ui-settings-button" type="button">/);
+  const leading = renderToStaticMarkup(h(ObjectSettingsRow, { title: "Helper", leading: h("span", null, "A") }));
+  assert.match(leading, /class="agent-ui-settings-row">/);
   assert.match(renderToStaticMarkup(h(Button, { variant: "primary" }, "Create")), /class="primary-button" type="button"/);
 });
 

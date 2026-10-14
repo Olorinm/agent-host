@@ -32,6 +32,8 @@ export function ObjectSettingsRow(props: {
   ariaLabel?: string;
   className?: string;
 }) {
+  // Rows without an icon or avatar drop the leading column so values stay right-aligned.
+  const plain = props.leading == null && !props.icon && "agent-ui-settings-row-plain";
   const content = (
     <>
       {props.leading ??
@@ -57,7 +59,7 @@ export function ObjectSettingsRow(props: {
   if (props.onClick) {
     return (
       <button
-        className={clsx("agent-ui-settings-row", "agent-ui-settings-button", props.className)}
+        className={clsx("agent-ui-settings-row", plain, "agent-ui-settings-button", props.className)}
         type="button"
         disabled={props.disabled}
         onClick={props.onClick}
@@ -68,7 +70,7 @@ export function ObjectSettingsRow(props: {
     );
   }
 
-  return <div className={clsx("agent-ui-settings-row", props.className)}>{content}</div>;
+  return <div className={clsx("agent-ui-settings-row", plain, props.className)}>{content}</div>;
 }
 
 export type ProductStatusTone = "running" | "success" | "warning" | "error" | "neutral";
