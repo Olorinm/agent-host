@@ -1,5 +1,7 @@
 # Agent Host
 
+> **Moved.** This package now lives in [Olorinm/agent-kit](https://github.com/Olorinm/agent-kit) under `packages/host`, with its history. This repository is archived and no longer updated.
+
 [English](README.md)
 
 Agent Host 是面向各类产品和个人使用场景的开源 Agent 接入层。产品提供自己的上下文、工具和用户交互，Agent Host 负责连接原生 Agent，返回执行过程和结果。

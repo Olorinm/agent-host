@@ -1,5 +1,7 @@
 # Agent Host
 
+> **Moved.** This package now lives in [Olorinm/agent-kit](https://github.com/Olorinm/agent-kit) under `packages/host`, with its history. This repository is archived and no longer updated.
+
 [中文](README.zh-CN.md)
 
 Agent Host is an open-source integration layer that makes native coding Agents easier to use in any product or personal workflow. Products supply context, tools and interaction handlers; Agent Host connects to the selected Agent and returns progress and results.
